@@ -5,8 +5,9 @@
 @inject IConfiguration _config
 
 <h3>People</h3>
-<hr />  
+<hr />
 <button class="btn btn-primary" @onclick="InsertData">New Data.</button>
+<button class="btn btn-info" @onclick="UpdateData">Update Data.</button>
 
 @if (peoples == null)
 {
@@ -26,9 +27,16 @@ else
 
     public string Connection => _config.GetConnectionString("default");
 
-    protected async  override Task OnInitializedAsync()
+    protected async override Task OnInitializedAsync()
     {
         await ListPeople();
+    }
+
+    private async Task ListPeople()
+    {
+        var sql = "select * from people";
+
+        peoples = await _data.LoadData<PersonModel, dynamic>(sql, new { }, Connection);
     }
 
     private async Task InsertData()
@@ -40,11 +48,13 @@ else
         await ListPeople();
     }
 
-    private async Task ListPeople()
+    private async Task UpdateData()
     {
-        var sql = "select * from people";
-
-        peoples = await _data.LoadData<PersonModel, dynamic>(sql, new { }, Connection);
+        var sql = "update people set FirstName = @FirstName where LastName = @LastName";
+        await _data.SaveData(sql, new { FirstName = "Antonio", LastName = "Barrera" }, Connection);
+        await ListPeople();
     }
+
+
 
 }
