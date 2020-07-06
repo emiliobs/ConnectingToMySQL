@@ -1,0 +1,20 @@
+﻿@page "/people"
+
+@using DataLibrary
+@inject IDataAccess _data
+@inject IConfiguration _config
+
+<h3>People</h3>
+
+@code {
+
+    List<PersonModel> people;
+
+    protected async  override Task OnInitializedAsync()
+    {
+        var sql = "select * from people";
+
+        people =  await _data.LoadData<PersonModel, dynamic>(sql, new { }, _config.GetConnectionString("default");
+    }
+
+}
