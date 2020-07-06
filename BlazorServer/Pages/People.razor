@@ -5,6 +5,9 @@
 @inject IConfiguration _config
 
 <h3>People</h3>
+<hr />  
+<button class="btn btn-primary" @onclick="InsertData">New Data.</button>
+
 @if (peoples == null)
 {
     <p><em>Loading.....</em></p>
@@ -21,11 +24,27 @@ else
 
     List<PersonModel> peoples;
 
+    public string Connection => _config.GetConnectionString("default");
+
     protected async  override Task OnInitializedAsync()
+    {
+        await ListPeople();
+    }
+
+    private async Task InsertData()
+    {
+        var sql = "insert into people (FirstName, LastName) values (@FirstName, @LastName);";
+
+        await _data.SaveData(sql, new { FirstName = "Lina", LastName = "Linda" }, Connection);
+
+        await ListPeople();
+    }
+
+    private async Task ListPeople()
     {
         var sql = "select * from people";
 
-        peoples =  await _data.LoadData<PersonModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
+        peoples = await _data.LoadData<PersonModel, dynamic>(sql, new { }, Connection);
     }
 
 }

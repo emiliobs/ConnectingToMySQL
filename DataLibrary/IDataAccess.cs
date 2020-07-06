@@ -6,6 +6,6 @@ namespace DataLibrary
     public interface IDataAccess
     {
         Task<List<T>> LoadData<T, U>(string sql, U parameters, string connectionString);
-        Task SaveData<T, U>(string sql, U parameter, string connectionString);
+        Task SaveData<T>(string sql, T parameter, string connectionString);
     }
 }
