@@ -8,7 +8,8 @@
 <hr />
 <button class="btn btn-primary" @onclick="InsertData">New Data.</button>
 <button class="btn btn-info" @onclick="UpdateData">Update Data.</button>
-
+<button class="btn btn-danger" @onclick="DeleteData">Delete Data.</button>
+<hr />
 @if (peoples == null)
 {
     <p><em>Loading.....</em></p>
@@ -52,6 +53,13 @@ else
     {
         var sql = "update people set FirstName = @FirstName where LastName = @LastName";
         await _data.SaveData(sql, new { FirstName = "Antonio", LastName = "Barrera" }, Connection);
+        await ListPeople();
+    }
+
+    private async Task DeleteData()
+    {
+        var sql = "delete from people where FirstName = @FirstName";
+        await _data.SaveData(sql, new { FirstName = "Lina" }, Connection);
         await ListPeople();
     }
 
