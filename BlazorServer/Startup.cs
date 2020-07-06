@@ -30,7 +30,7 @@ namespace BlazorServer
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
-            services.AddSingleton<DataAccess, DataAccess>();
+            services.AddSingleton<IDataAccess, DataAccess>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

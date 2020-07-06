@@ -5,16 +5,27 @@
 @inject IConfiguration _config
 
 <h3>People</h3>
+@if (peoples == null)
+{
+    <p><em>Loading.....</em></p>
+}
+else
+{
+    @foreach (var people in peoples)
+    {
+        <p>@people.FullName</p>
+    }
+}
 
 @code {
 
-    List<PersonModel> people;
+    List<PersonModel> peoples;
 
     protected async  override Task OnInitializedAsync()
     {
         var sql = "select * from people";
 
-        people =  await _data.LoadData<PersonModel, dynamic>(sql, new { }, _config.GetConnectionString("default");
+        peoples =  await _data.LoadData<PersonModel, dynamic>(sql, new { }, _config.GetConnectionString("default"));
     }
 
 }
